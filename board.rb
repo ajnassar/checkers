@@ -2,8 +2,8 @@ class Board
 	BLANK = "_|"
   attr_accessor :grid
 
-	def initialize
-		fill_board
+	def initialize(fillgrid = true)
+		fill_board if fillgrid
 	end
 
   def [](x, y)
@@ -26,9 +26,22 @@ class Board
     puts disp
 	end
 
+  def dup
+    duped_board = Board.new(false)
+    duped_grid = Array.new(8) {Array.new(8)}
+    duped_board.grid = duped_grid
+    self.grid.each_index do |row|
+      self.grid.each_index do |col|
+        piece = self.grid[row][col]
+        next if piece.nil?
+        duped_grid[row][col] = Piece.new(duped_board, [row, col], piece.color)
+      end
+    end
+    duped_board
+  end
+
   def empty?(x, y)
     self.grid[x][y].nil?
-
   end
 
 	def fill_board

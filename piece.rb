@@ -22,26 +22,30 @@ class Piece
 	end
 
 	def perform_jump(destination_x, destination_y)
-    raise "Invalid move" if !valid_jump_pos?(destination_x, destination_y)
-    raise "Already a piece there." if !board.empty?(destination_x, destination_y)
+    return false if !valid_jump_pos?(destination_x, destination_y)
+    return false if !board.empty?(destination_x, destination_y)
       current_x, current_y = position
       board[destination_x, destination_y] = self
       self.position = [destination_x, destination_y]
       board[current_x, current_y] = nil
+      return true
 	end
 
 	def perform_slide(destination_x, destination_y)
-    raise "Invalid move" if !valid_pos?(destination_x, destination_y)
-    raise "Already a piece there." if !board.empty?(destination_x, destination_y)
+    return false if !valid_pos?(destination_x, destination_y)
+    return false if !board.empty?(destination_x, destination_y)
      current_x, current_y = position
      board[destination_x, destination_y] = self
      self.position = [destination_x, destination_y]
      board[current_x, current_y] = nil
+     return true
 	end
 
   def perform_moves!(moves)
-    if moves.count == 1
-        perform_slide(moves[0], moves[1])
+    if moves.count == 2
+        if !perform_slide(moves[0], moves[1])
+          perform_jump(moves[0], moves[1])
+        end
     else
 
     end
