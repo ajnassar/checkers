@@ -19,7 +19,7 @@ class Board
 		self.grid.each_with_index do |row, rowi|
       disp += "\n#{rowi}"
 			row.each do |piece|
-        disp += piece.nil? ? BLANK : piece.render
+        disp += piece.nil? ? BLANK : piece.to_s
 			end
     end
 

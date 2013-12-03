@@ -1,5 +1,6 @@
 require_relative "board"
 require_relative "piece"
+
 class InvalidMoveError < StandardError
   def initialize(msg = "There is an error here.")
     super
@@ -7,8 +8,6 @@ class InvalidMoveError < StandardError
 end
 
 class Game
-
-
 
 end
 
@@ -37,3 +36,9 @@ p b
 
 b[2, 2].perform_moves!([[3,3]])
 p b
+
+ b[6,0].perform_moves([[4,2], [3,1]]) #incorrect move
+ p b
+
+# b[6,0].perform_moves([[4,2], [2,4]]) #correct move
+# p b

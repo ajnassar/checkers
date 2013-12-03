@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 class Piece
+  SYMBOL = { :white => '♙|', :black => '♟|' }
 	attr_reader :color, :board
 	attr_accessor :position
 
@@ -36,7 +37,11 @@ class Piece
 	end
 
   def perform_moves(moves)
-
+    if !valid_move_seq?(moves)
+      raise InvalidMoveError, "error in non bang"
+    else
+      perform_moves!(moves)
+    end
   end
 
   def perform_moves!(moves)
@@ -47,14 +52,24 @@ class Piece
     else
       i = 0
       moves.each do |move|
-        perform_jump(move[i][0], move[i][1])
+        if !perform_jump(move[0], move[1])
+          raise InvalidMoveError , "error in bang"
+        end
       end
     end
   end
 
-  def valid_move_seq?
-    dup_board = b.dup
-
+  def valid_move_seq?(moves)
+    dup_board = board.dup
+    x, y = position
+    begin
+      dup_board[x, y].perform_moves!(moves)
+      return true
+    rescue
+      return false
+    else
+      return false
+    end
   end
 
 	def perform_slide(destination_x, destination_y)
@@ -67,14 +82,8 @@ class Piece
     return true
 	end
 
-
-
-	def render
-		symbols[color]
-	end
-
-	def symbols
-		{ :white => '♙|', :black => '♟|' }
+	def to_s
+		SYMBOL[color]
 	end
 
   def valid_jump_pos?(destination_x, destination_y)
