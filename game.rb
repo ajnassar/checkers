@@ -19,7 +19,9 @@ class Game
       p board
       puts "Enter a move(s)"
       input = convert_input(gets.chomp)
+      p input
       start_x, start_y = input.shift
+      p input
       self.board[start_x, start_y].perform_moves(input)
     end
   end
