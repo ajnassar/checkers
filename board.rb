@@ -14,7 +14,7 @@ class Board
     self.grid[x][y] = piece
   end
 
-  def display
+  def to_s
     disp = " \n\n 0 1 2 3 4 5 6 7"
 		self.grid.each_with_index do |row, rowi|
       disp += "\n#{rowi}"
@@ -23,7 +23,7 @@ class Board
 			end
     end
 
-    puts disp
+    disp
 	end
 
   def dup

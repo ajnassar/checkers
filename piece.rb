@@ -24,32 +24,50 @@ class Piece
 	def perform_jump(destination_x, destination_y)
     return false if !valid_jump_pos?(destination_x, destination_y)
     return false if !board.empty?(destination_x, destination_y)
-      current_x, current_y = position
-      board[destination_x, destination_y] = self
-      self.position = [destination_x, destination_y]
-      board[current_x, current_y] = nil
-      return true
+    dx = (destination_x - position[0] ) / 2
+    dy = (destination_y - position[1]) / 2
+    p position[0] + dx; p position[1] + dy
+    board.remove_piece(position[0] + dx, position[1] + dy)
+    current_x, current_y = position
+    board[destination_x, destination_y] = self
+    self.position = [destination_x, destination_y]
+    board[current_x, current_y] = nil
+    return true
 	end
+
+  def perform_moves(moves)
+
+  end
+
+  def perform_moves!(moves)
+    if moves.count == 1
+        if !perform_slide(moves[0][0], moves[0][1])
+          perform_jump(moves[0][0], moves[0][1])
+        end
+    else
+      i = 0
+      moves.each do |move|
+        perform_jump(move[i][0], move[i][1])
+      end
+    end
+  end
+
+  def valid_move_seq?
+    dup_board = b.dup
+
+  end
 
 	def perform_slide(destination_x, destination_y)
     return false if !valid_pos?(destination_x, destination_y)
     return false if !board.empty?(destination_x, destination_y)
-     current_x, current_y = position
-     board[destination_x, destination_y] = self
-     self.position = [destination_x, destination_y]
-     board[current_x, current_y] = nil
-     return true
+    current_x, current_y = position
+    board[destination_x, destination_y] = self
+    self.position = [destination_x, destination_y]
+    board[current_x, current_y] = nil
+    return true
 	end
 
-  def perform_moves!(moves)
-    if moves.count == 2
-        if !perform_slide(moves[0], moves[1])
-          perform_jump(moves[0], moves[1])
-        end
-    else
 
-    end
-  end
 
 	def render
 		symbols[color]
@@ -64,7 +82,7 @@ class Piece
     move_diffs.each do |dx, dy|
       if (current_x + dx + dx == destination_x) && (current_y + dy + dy == destination_y)
         if check_for_piece(dx, dy)
-            board.remove_piece(current_x + dx, current_y + dy)
+            #board.remove_piece(current_x + dx, current_y + dy)
             return true
         end
       end
