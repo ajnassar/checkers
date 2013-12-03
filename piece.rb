@@ -37,10 +37,10 @@ class Piece
 	end
 
   def perform_moves(moves)
-    if !valid_move_seq?(moves)
-      raise InvalidMoveError, "error in non bang"
-    else
+    if valid_move_seq?(moves)
       perform_moves!(moves)
+    else
+      raise InvalidMoveError, "error in non bang"
     end
   end
 
@@ -50,10 +50,9 @@ class Piece
           perform_jump(moves[0][0], moves[0][1])
         end
     else
-      i = 0
       moves.each do |move|
         if !perform_jump(move[0], move[1])
-          raise InvalidMoveError , "error in bang"
+          raise InvalidMoveError
         end
       end
     end
@@ -65,9 +64,7 @@ class Piece
     begin
       dup_board[x, y].perform_moves!(moves)
       return true
-    rescue
-      return false
-    else
+    rescue InvalidMoveError
       return false
     end
   end
